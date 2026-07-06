@@ -1,0 +1,24 @@
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { RequestContext, CurrentUser } from '../context/request-context';
+import { getRequest } from '../context/get-request';
+
+@Injectable()
+export class RequestContextInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+    const request = getRequest(context);
+    const user = request.user as CurrentUser | undefined;
+    const requestId = request.headers['x-request-id'] as string | undefined;
+
+    return new Observable((observer) => {
+      RequestContext.run({ user, requestId }, () => {
+        next.handle().subscribe(observer);
+      });
+    });
+  }
+}

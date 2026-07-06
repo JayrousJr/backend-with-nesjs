@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@config": ["src/config/index.ts"],
+      "@config/*": ["src/config/*"],
+      "@common": ["src/common/index.ts"],
+      "@common/*": ["src/common/*"],
+      "@prisma": ["src/prisma/index.ts"],
+      "@permissions": ["src/permissions/index.ts"],
+      "@permissions/*": ["src/permissions/*"],
+      "@db": ["generated/prisma/client.ts"]
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "types": ["jest"]
+  }
+}

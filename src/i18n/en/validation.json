@@ -1,0 +1,23 @@
+{
+  "isString": "{property} must be a string.",
+  "isEmail": "{property} must be a valid email address.",
+  "isNotEmpty": "{property} must not be empty.",
+  "isArray": "{property} must be an array.",
+  "isBoolean": "{property} must be true or false.",
+  "isInt": "{property} must be a whole number.",
+  "isEnum": "{property} must be one of the accepted values.",
+  "isUUID": "{property} must be a valid UUID.",
+  "isDateString": "{property} must be a valid date.",
+  "isDate": "{property} must be a valid date.",
+  "minLength": "{property} must be at least {constraint1} characters.",
+  "maxLength": "{property} must not exceed {constraint1} characters.",
+  "min": "{property} must be at least {constraint1}.",
+  "max": "{property} must not exceed {constraint1}.",
+  "arrayUnique": "{property} must not contain duplicate values.",
+  "arrayMinSize": "{property} must contain at least {constraint1} items.",
+  "arrayMaxSize": "{property} must not contain more than {constraint1} items.",
+  "matches": "{property} format is invalid.",
+  "isDefined": "{property} is required.",
+  "isOptional": "{property} is optional.",
+  "failed": "Input validation failed."
+}

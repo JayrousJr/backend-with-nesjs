@@ -1,0 +1,25 @@
+{
+  "DELETE_USER": "User has been deleted successiful",
+  "CREATE_USER": "User has been created successiful",
+  "UPDATE_USER": "User has been updated successiful",
+  "UPDATE_PASSWORD": "Password has been changed Successiful",
+  "LOGIN": "You have logged-in to your account successiful",
+  "REGISTER": "You have successiful created your account",
+  "ROLE_ASSIGN": "Role assigned successfully",
+  "ROLE_CREATE": "Role created successfully",
+  "ROLE_UPDATE": "Role updated successfully",
+  "ROLE_DELETE": "Role deleted successfully",
+  "PERMISSION_UPDATE": "Permissions updated successfully",
+  "LOCALE_CHANGED": "Language preference changed successiful",
+  "CAMPAIGN_CREATE": "Campaign created successfully",
+  "CAMPAIGN_UPDATE": "Campaign updated successfully",
+  "CAMPAIGN_DELETE": "Campaign deleted successfully",
+  "CAMPAIGN_SEND": "Campaign sent successfully",
+  "CAMPAIGN_SCHEDULE": "Campaign scheduled successfully",
+  "NEWSLETTER": {
+    "subscribe_message": "You're subscribed to our newsletter",
+    "unsubscribe_message": "You've been unsubscribed"
+  },
+  "NOTIFICATION_READ": "Notification marked as read",
+  "NOTIFICATION_READ_ALL": "All notifications marked as read"
+}

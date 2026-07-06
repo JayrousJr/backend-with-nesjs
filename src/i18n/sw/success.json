@@ -1,0 +1,25 @@
+{
+  "DELETE_USER": "Mtumiaji futwa kwa mafanikio",
+  "CREATE_USER": "Mtumiaji ameundwa kwa mafanikio",
+  "UPDATE_USER": "Mtumiaji amesasishwa kwa mafanikio",
+  "UPDATE_PASSWORD": "Nenosiri limebadilishwa kwa mafanikio",
+  "REGISTER": "Umefanikiwa kutengeneza akaunti yako",
+  "LOGIN": "Umefanikiwa kuingia kwenye akaunti yako",
+  "LOCALE_CHANGED": "Mapendeleo ya lugha yamebadilishwa kwa mafanikio",
+  "ROLE_ASSIGN": "Wajibu umepewa kwa mafanikio",
+  "ROLE_CREATE": "Wajibu umeundwa kwa mafanikio",
+  "ROLE_UPDATE": "Wajibu umesasishwa kwa mafanikio",
+  "ROLE_DELETE": "Wajibu umefutwa kwa mafanikio",
+  "PERMISSION_UPDATE": "Ruhusa zimesasishwa kwa mafanikio",
+  "CAMPAIGN_CREATE": "Kampeni imeundwa kwa mafanikio",
+  "CAMPAIGN_UPDATE": "Kampeni imesasishwa kwa mafanikio",
+  "CAMPAIGN_DELETE": "Kampeni imefutwa kwa mafanikio",
+  "CAMPAIGN_SEND": "Kampeni imetumwa kwa mafanikio",
+  "CAMPAIGN_SCHEDULE": "Kampeni imepangwa kwa mafanikio",
+  "NEWSLETTER": {
+    "subscribe_message": "Umejisajili katika jarida letu",
+    "unsubscribe_message": "Umejiondoa katika jarida letu"
+  },
+  "NOTIFICATION_READ": "Arifa imewekwa kama imesomwa",
+  "NOTIFICATION_READ_ALL": "Arifa zote zimewekwa kama zimesomwa"
+}

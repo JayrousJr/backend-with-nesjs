@@ -1,0 +1,318 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Base model fields — copy this block into every new model:
+//
+//   id          Int       @id @default(autoincrement())
+//   uniqueId    String    @unique @default(uuid(7)) @map("unique_id")
+//   createdById Int?      @map("created_by_id")
+//   updatedById Int?      @map("updated_by_id")
+//   deletedById Int?      @map("deleted_by_id")
+//   isDeleted   Boolean   @default(false) @map("is_deleted")
+//   isActive    Boolean   @default(true) @map("is_active")
+//   createdAt   DateTime  @default(now()) @map("created_at")
+//   updatedAt   DateTime  @updatedAt @map("updated_at")
+//   deletedAt   DateTime? @map("deleted_at")
+
+model User {
+  id        Int     @id @default(autoincrement())
+  uniqueId  String  @unique @default(uuid(7)) @map("unique_id")
+  email     String  @unique
+  password  String
+  firstName String  @map("first_name")
+  lastName  String  @map("last_name")
+  roleId    Int     @map("role_id")
+  tenantId  String? @map("tenant_id")
+
+  preferredLocale        String    @default("en") @map("preferred_locale")
+
+  emailVerifiedAt        DateTime? @map("email_verified_at")
+  verificationToken      String?   @unique @map("verification_token")
+  verificationExpiresAt  DateTime? @map("verification_expires_at")
+  passwordResetToken     String?   @unique @map("password_reset_token")
+  passwordResetExpiresAt DateTime? @map("password_reset_expires_at")
+
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until")
+
+  avatarId Int? @unique @map("avatar_id")
+
+  role          Role           @relation(fields: [roleId], references: [id])
+  avatar        File?          @relation(fields: [avatarId], references: [id], onDelete: SetNull)
+  permissions   Permission[]   @relation("UserPermissions")
+  sessions      Session[]
+  pageViews     PageView[]
+  notifications Notification[]
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  newsletterSubscription NewsletterSubscriber?
+
+  @@map("users")
+}
+
+// Tracks issued refresh tokens so they can be individually revoked (logout)
+// or revoked in bulk (logout-all). uniqueId is the "sid" claim embedded in
+// both the access and refresh JWTs for a given session.
+model Session {
+  id       Int    @id @default(autoincrement())
+  uniqueId String @unique @default(uuid(7)) @map("unique_id")
+  userId   Int    @map("user_id")
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userAgent String?  @map("user_agent")
+  ipAddress String?  @map("ip_address")
+  expiresAt DateTime @map("expires_at")
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("sessions")
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  uniqueId    String  @unique @default(uuid(7)) @map("unique_id")
+  name        String  @unique
+  description String?
+
+  users       User[]
+  permissions Permission[] @relation("RolePermissions")
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("roles")
+}
+
+model Permission {
+  id          Int     @id @default(autoincrement())
+  uniqueId    String  @unique @default(uuid(7)) @map("unique_id")
+  name        String  @unique
+  description String?
+
+  roles Role[] @relation("RolePermissions")
+  users User[] @relation("UserPermissions")
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("permissions")
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+}
+
+// In-app notifications, delivered in real time over the EventsGateway socket.
+// titleKey/messageKey hold frontend i18n keys (with `params` as interpolation
+// values) rather than pre-translated text, so the UI renders them in whatever
+// locale the user is currently using.
+model Notification {
+  id       Int    @id @default(autoincrement())
+  uniqueId String @unique @default(uuid(7)) @map("unique_id")
+  userId   Int    @map("user_id")
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type       NotificationType @default(INFO)
+  titleKey   String           @map("title_key")
+  messageKey String           @map("message_key")
+  params     Json?
+  link       String?
+  readAt     DateTime?        @map("read_at")
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  FAILED
+}
+
+enum CampaignRecipientStatus {
+  PENDING
+  QUEUED
+  SENT
+  FAILED
+}
+
+model NewsletterSubscriber {
+  id       Int    @id @default(autoincrement())
+  uniqueId String @unique @default(uuid(7)) @map("unique_id")
+  userId   Int    @unique @map("user_id")
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  campaignRecipients CampaignRecipient[]
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("newsletter_subscribers")
+}
+
+model Campaign {
+  id             Int            @id @default(autoincrement())
+  uniqueId       String         @unique @default(uuid(7)) @map("unique_id")
+  subject        String
+  bodyHtml       String         @map("body_html") @db.Text
+  bodyText       String         @map("body_text") @db.Text
+  status         CampaignStatus @default(DRAFT)
+  scheduledAt    DateTime?      @map("scheduled_at")
+  sentAt         DateTime?      @map("sent_at")
+  recipientCount Int            @default(0) @map("recipient_count")
+
+  recipients CampaignRecipient[]
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("campaigns")
+}
+
+model CampaignRecipient {
+  id           Int                      @id @default(autoincrement())
+  uniqueId     String                   @unique @default(uuid(7)) @map("unique_id")
+  campaignId   Int                      @map("campaign_id")
+  subscriberId Int                      @map("subscriber_id")
+  campaign     Campaign                 @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  subscriber   NewsletterSubscriber     @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  status       CampaignRecipientStatus  @default(PENDING)
+  sentAt       DateTime?                @map("sent_at")
+  error        String?
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([campaignId, subscriberId])
+  @@map("campaign_recipients")
+}
+
+model File {
+  id       Int    @id @default(autoincrement())
+  uniqueId String @unique @default(uuid(7)) @map("unique_id")
+
+  filename String
+  mimeType String @map("mime_type")
+  size     Int
+  uri      String
+
+  avatarUser User?
+
+  createdById Int? @map("created_by_id")
+  updatedById Int? @map("updated_by_id")
+  deletedById Int? @map("deleted_by_id")
+
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("files")
+}
+
+model PageView {
+  id        Int      @id @default(autoincrement())
+  path      String
+  referrer  String?
+  userAgent String?  @map("user_agent")
+  ipHash    String?  @map("ip_hash")
+  country   String?
+  sessionId String   @map("session_id")
+  userId    Int?     @map("user_id")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([sessionId])
+  @@map("page_views")
+}
+
+model VisitorStat {
+  id                 Int      @id @default(autoincrement())
+  date               DateTime @db.Date
+  path               String
+  viewCount          Int      @default(0) @map("view_count")
+  uniqueVisitorCount Int      @default(0) @map("unique_visitor_count")
+
+  @@unique([date, path])
+  @@index([date])
+  @@map("visitor_stats")
+}

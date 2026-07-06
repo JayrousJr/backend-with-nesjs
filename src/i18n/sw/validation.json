@@ -1,0 +1,23 @@
+{
+  "isString": "{property} lazima iwe herufi.",
+  "isEmail": "{property} lazima iwe anwani sahihi ya barua pepe.",
+  "isNotEmpty": "{property} haiwezi kuwa tupu.",
+  "isArray": "{property} lazima iwe orodha.",
+  "isBoolean": "{property} lazima iwe kweli au uongo.",
+  "isInt": "{property} lazima iwe nambari nzima.",
+  "isEnum": "{property} lazima iwe moja ya thamani zinazoruhusiwa.",
+  "isUUID": "{property} lazima iwe UUID sahihi.",
+  "isDateString": "{property} lazima iwe tarehe sahihi.",
+  "isDate": "{property} lazima iwe tarehe sahihi.",
+  "minLength": "{property} lazima iwe na herufi {constraint1} au zaidi.",
+  "maxLength": "{property} lazima isiwe na herufi zaidi ya {constraint1}.",
+  "min": "{property} lazima iwe {constraint1} au zaidi.",
+  "max": "{property} lazima isiwe zaidi ya {constraint1}.",
+  "arrayUnique": "{property} haipaswi kuwa na thamani zinazofanana.",
+  "arrayMinSize": "{property} lazima iwe na vipande {constraint1} au zaidi.",
+  "arrayMaxSize": "{property} lazima isiwe na vipande zaidi ya {constraint1}.",
+  "matches": "Muundo wa {property} si sahihi.",
+  "isDefined": "{property} inahitajika.",
+  "isOptional": "{property} ni ya hiari.",
+  "failed": "Uthibitishaji wa taarifa umeshindwa."
+}

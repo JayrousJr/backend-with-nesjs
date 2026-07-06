@@ -1,0 +1,20 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@config$": "<rootDir>/../src/config/index.ts",
+    "^@config/(.*)$": "<rootDir>/../src/config/$1",
+    "^@common$": "<rootDir>/../src/common/index.ts",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@prisma$": "<rootDir>/../src/prisma/index.ts",
+    "^@permissions$": "<rootDir>/../src/permissions/index.ts",
+    "^@permissions/(.*)$": "<rootDir>/../src/permissions/$1",
+    "^@db$": "<rootDir>/../generated/prisma/client.ts",
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  }
+}
