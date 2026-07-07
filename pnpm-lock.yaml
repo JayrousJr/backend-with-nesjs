@@ -74,6 +74,9 @@ importers:
       '@nestjs/websockets':
         specifier: ^11.1.18
         version: 11.1.18(@nestjs/common@11.1.18(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.18)(@nestjs/platform-socket.io@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@prisma/adapter-pg':
+        specifier: ^7.7.0
+        version: 7.7.0
       '@prisma/client':
         specifier: ^7.7.0
         version: 7.7.0(prisma@7.7.0(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@5.9.3))(typescript@5.9.3)
@@ -104,6 +107,9 @@ importers:
       csrf-csrf:
         specifier: ^4.0.3
         version: 4.0.3
+      dotenv:
+        specifier: ^17.4.1
+        version: 17.4.1
       express-session:
         specifier: ^1.19.0
         version: 1.19.0
@@ -146,6 +152,9 @@ importers:
       passport-local:
         specifier: ^1.0.0
         version: 1.0.0
+      pg:
+        specifier: ^8.20.0
+        version: 8.20.0
       prisma:
         specifier: ^7.7.0
         version: 7.7.0(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@5.9.3)
@@ -177,9 +186,6 @@ importers:
       '@nestjs/testing':
         specifier: ^11.1.18
         version: 11.1.18(@nestjs/common@11.1.18(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.18)(@nestjs/platform-express@11.1.18)
-      '@prisma/adapter-pg':
-        specifier: ^7.7.0
-        version: 7.7.0
       '@types/bcrypt':
         specifier: ^6.0.0
         version: 6.0.0
@@ -222,9 +228,6 @@ importers:
       '@types/supertest':
         specifier: ^7.2.0
         version: 7.2.0
-      dotenv:
-        specifier: ^17.4.1
-        version: 17.4.1
       eslint:
         specifier: ^9.39.4
         version: 9.39.4(jiti@2.6.1)
@@ -246,9 +249,6 @@ importers:
       lint-staged:
         specifier: ^17.0.8
         version: 17.0.8
-      pg:
-        specifier: ^8.20.0
-        version: 8.20.0
       prettier:
         specifier: ^3.8.2
         version: 3.8.2

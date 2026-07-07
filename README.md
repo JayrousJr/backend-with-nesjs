@@ -27,6 +27,25 @@ A production-ready backend template with NestJS, GraphQL (Apollo, code-first), P
 - **Health Checks** — `/api/health` endpoint
 - **Swagger** — Auto-generated REST API docs at `/api/docs`
 
+## Deployment (Docker)
+
+The multi-stage `Dockerfile` produces a production image: full install → `prisma generate` → webpack bundle (via `webpack.prod.config.js`, no HMR), then a slim runtime layer with production dependencies only. Migrations run automatically on container start.
+
+```bash
+# Single container (bring your own Postgres/Redis)
+docker build -t my-api .
+docker run --env-file .env -p 3005:3005 my-api
+
+# Or the full stack in one command
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+Notes:
+
+- `prisma`, `pg`, `@prisma/adapter-pg`, and `dotenv` are production dependencies on purpose — the runtime constructs the client through the pg driver adapter and the CLI runs `migrate deploy` at boot.
+- `src/i18n/` is copied into the image because nestjs-i18n reads translations from disk at runtime.
+- Vite-style build-time config does not apply here: all configuration is runtime env vars (`--env-file .env`).
+
 ## Quick Start
 
 ### Prerequisites

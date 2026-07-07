@@ -19,19 +19,25 @@ COPY . .
 RUN pnpm db:generate && pnpm build:prod
 
 # ---- prod-deps: production node_modules only ----
+# --ignore-scripts: skips the husky "prepare" hook (a devDependency that
+# doesn't exist here); bcrypt/prisma need no postinstall — bcrypt ships
+# prebuilds and the Prisma client is generated in the build stage.
 FROM base AS prod-deps
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # ---- runner ----
 FROM node:22-slim AS runner
 ENV NODE_ENV=production
+# openssl: required by the Prisma CLI for `migrate deploy`
+RUN apt-get update -y && apt-get install -y --no-install-recommends openssl \
+  && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/generated ./generated
-COPY package.json ./
+COPY package.json prisma.config.ts ./
 COPY prisma ./prisma
 # nestjs-i18n reads translations from disk at runtime (process.cwd()/src/i18n)
 COPY src/i18n ./src/i18n
