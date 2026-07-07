@@ -27,25 +27,6 @@ A production-ready backend template with NestJS, GraphQL (Apollo, code-first), P
 - **Health Checks** — `/api/health` endpoint
 - **Swagger** — Auto-generated REST API docs at `/api/docs`
 
-## Deployment (Docker)
-
-The multi-stage `Dockerfile` produces a production image: full install → `prisma generate` → webpack bundle (via `webpack.prod.config.js`, no HMR), then a slim runtime layer with production dependencies only. Migrations run automatically on container start.
-
-```bash
-# Single container (bring your own Postgres/Redis)
-docker build -t my-api .
-docker run --env-file .env -p 3005:3005 my-api
-
-# Or the full stack in one command
-docker compose -f docker-compose.prod.yml up -d --build
-```
-
-Notes:
-
-- `prisma`, `pg`, `@prisma/adapter-pg`, and `dotenv` are production dependencies on purpose — the runtime constructs the client through the pg driver adapter and the CLI runs `migrate deploy` at boot.
-- `src/i18n/` is copied into the image because nestjs-i18n reads translations from disk at runtime.
-- Vite-style build-time config does not apply here: all configuration is runtime env vars (`--env-file .env`).
-
 ## Quick Start
 
 ### Prerequisites
@@ -112,6 +93,46 @@ See `.env.example` for all available configuration. Key ones:
 | `REDIS_HOST`         | Redis host for BullMQ                             | `localhost`  |
 | `MAIL_MAILER`        | Mail transport (`smtp` or leave empty for Resend) | —            |
 | `STORAGE_DRIVER`     | File storage (`local` or `s3`)                    | `local`      |
+
+## Deployment (Docker)
+
+The multi-stage `Dockerfile` produces a production image: full install → `prisma generate` → webpack bundle (via `webpack.prod.config.js`, no HMR), then a slim runtime layer with production dependencies only. Migrations run automatically on container start.
+
+```bash
+# Single container (bring your own Postgres/Redis)
+docker build -t my-api .
+docker run --env-file .env -p 3005:3005 my-api
+
+# Or the full stack in one command
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+Notes:
+
+- `prisma`, `pg`, `@prisma/adapter-pg`, and `dotenv` are production dependencies on purpose — the runtime constructs the client through the pg driver adapter and the CLI runs `migrate deploy` at boot.
+- `src/i18n/` is copied into the image because nestjs-i18n reads translations from disk at runtime.
+- Vite-style build-time config does not apply here: all configuration is runtime env vars (`--env-file .env`).
+
+## Keeping your project up to date
+
+Projects created from this template have **no automatic link back to it** — you own a divergent copy. Three ways to pull in template improvements, from manual to automated:
+
+1. **Follow the releases.** Each [release](https://github.com/JayrousJr/backend-with-nesjs/releases) describes what changed and how to apply it to an existing project. Commits are small and conventional, so individual changes are easy to cherry-pick by hand.
+
+2. **Template remote** (best adopted right after scaffolding, degrades as you diverge):
+
+   ```bash
+   git remote add template git@github.com:JayrousJr/backend-with-nesjs.git
+   # when the template releases updates:
+   git fetch template
+   git merge template/main --allow-unrelated-histories
+   ```
+
+   Files you never touched merge cleanly; files you customized raise conflicts to resolve deliberately.
+
+3. **Automated sync PRs** — install [`actions-template-sync`](https://github.com/AndreasAugustin/actions-template-sync) in your project and template changes arrive as reviewable pull requests on a schedule.
+
+After significant divergence, most projects stop syncing wholesale and instead read the template's release diffs for ideas — that's expected and fine.
 
 ## Project Structure
 
