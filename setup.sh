@@ -91,3 +91,4 @@ echo "  3. Run migrations:        npx prisma migrate dev"
 echo "  4. Seed the database:     npx prisma db seed"
 echo "  5. Start the server:      pnpm start:dev"
 echo ""
+
